@@ -8,3 +8,6 @@
 #### ⦁	It checks the balance in the bank account for payment and then proceeds to the next step based on the payment.
 #### ⦁	Check the number of luggage to see if additional charges are required based on weight.
 #### ⦁	The notice board displays the details of the flight.
+
+#### State Pattern:
+The booking process employs an abstract BookingStatus class with specific states—Processing, Confirm, and Aborted. This encapsulates the booking state and allows the system to change its behavior based on the current status.
