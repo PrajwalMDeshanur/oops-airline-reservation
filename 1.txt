@@ -1,0 +1,100 @@
+This project is an extensive simulation of an airport reservation and management system built in C++. It brings together multiple aspects of airport operations—from security checks to flight booking and payment processing—using object‑oriented design. Below is an in‑depth explanation of its architecture and functionality:
+
+1. Overall Architecture and Flow
+Purpose:
+The system models real-world airport operations by simulating key processes such as passenger verification, ticket booking, flight management, and multi‑channel payment processing. The program is structured to mimic actual operations within an airport—starting from security checks (e.g., passport verification) to displaying flight information on a notice board.
+
+Main Flow:
+The main() function orchestrates the workflow: it creates objects for passengers, luggage, flights, employees, and the airport itself. For each passenger, the system performs a security check (passport verification) and then initiates the ticket booking process if the check passes. The booking process involves calculating the final fare (considering class type, additional services, and extra charges for overweight luggage), processing payments via different methods, and displaying flight information.
+
+2. Key Components and Their Responsibilities
+Airport and Employee Modules
+Airport Class:
+Role: Represents an airport with attributes such as name and location.
+Functionality: Provides a method to print a welcome message, which is used when a passenger is cleared to enter.
+Employee Hierarchy:
+Employee (Abstract Class): Defines common attributes (name, ID, salary, experience) and a pure virtual function printEmployee().
+Derived Classes:
+AirportEmployee: Represents ground staff (e.g., security, ticket counter) and implements the method to display employee details.
+AirlineEmployee: Represents airline staff and similarly implements employee information display.
+Benefit: This hierarchy demonstrates polymorphism, allowing the system to handle different types of employees uniformly.
+Payment Processing
+BankAccount Class:
+Role: Models net banking by storing an account number and balance.
+Functionality: Provides a method to debit the account while ensuring sufficient funds.
+Card Module (Strategy Pattern):
+Abstract Class Card:
+Defines common card attributes and a pure virtual function payAmount(), which enforces the implementation of payment logic in derived classes.
+Concrete Implementations:
+CreditCard: Tracks credit limits and the current credit usage. Its payAmount() method ensures that the payment does not exceed the maximum allowable credit.
+DebitCard: Processes payments directly against the available balance.
+Design Insight:
+By abstracting the payment method into a base class with multiple strategies (CreditCard and DebitCard), the system can dynamically choose a payment method at runtime based on user input.
+Additional Services and Luggage Handling
+Luggage Class:
+Role: Manages luggage details including weight and number of pieces.
+Functionality: Contains a method checkLuggage() that calculates additional fees if the weight exceeds a predefined limit (12 kg). This simulates real‑world overweight luggage charges.
+Flight Management and Notice Board
+Flight Class:
+Role: Encapsulates all flight-related information such as flight ID, flight name, capacity, and timings.
+Functionality: The printFlight() method outputs flight details, which are then used by the ticket booking process.
+NoticeBoard Class:
+Role: Simulates an airport’s flight information display system.
+Functionality: Iterates over an array of flight pointers and prints a formatted list of available flights (including boarding and departure times).
+Booking Process and Status Handling (State Pattern)
+BookingStatus Module:
+Abstract Class BookingStatus:
+Provides a pure virtual function print() to output the current state of the booking.
+Concrete States:
+Processing: Indicates that the ticket booking is in progress.
+Confirm: Indicates successful booking and increments a global confirmation counter.
+Aborted: Indicates a failed or aborted booking process.
+Benefit:
+Using this state-based design (akin to the State pattern) encapsulates the different stages of a booking, making it easier to manage transitions and corresponding outputs.
+Ticket Booking Core (TicketCounter Class)
+TicketCounter Class:
+Role: Acts as the central hub for ticket booking. It integrates various elements such as flight selection, payment processing, and additional charges.
+Key Functionalities:
+Flight Selection: Searches an array of flight pointers to display available flights matching the passenger’s destination.
+Price Calculation: Uses helper functions (classTypePrice() and additionalServices()) to determine extra charges based on the class of travel and selected additional services (e.g., meal, lounge access). It also incorporates overweight luggage charges computed by the Luggage class.
+Payment Loop: Allows up to three attempts for payment processing using different methods (credit card, debit card, or net banking).
+Error Handling: Throws an ApplicationException if all payment methods fail, ensuring that error conditions are managed gracefully.
+Design Patterns Involved:
+Strategy Pattern: For choosing the payment method at runtime.
+State Pattern: For managing and displaying the current booking status during the process.
+Passenger Module
+Passengers Class:
+Role: Represents a passenger with personal details (name, ID, contact info) and booking status.
+Functionality:
+Provides methods to print passenger details.
+Contains the ticketBook() function that triggers the booking process if a ticket hasn’t been booked yet.
+Integration:
+This class links with the TicketCounter for processing the ticket, BankAccount and Card objects for payment, and Luggage for additional service charges.
+3. Exception Handling and Robustness
+ApplicationException:
+This custom exception class is used to signal a failure in the booking process, especially when all payment attempts have been exhausted.
+The booking process in the TicketCounter class is wrapped in try‑catch blocks, ensuring that failures are caught and handled appropriately, and meaningful error messages are displayed to the user.
+4. In‑Depth Design Patterns
+Strategy Pattern for Payment Processing:
+The abstract Card class along with its concrete implementations (CreditCard and DebitCard) encapsulates different payment algorithms. At runtime, the system selects the appropriate payment strategy based on user input, making it flexible to add or modify payment methods without altering the core booking logic.
+
+State Pattern for Booking Status:
+The booking process leverages a hierarchy of status classes (Processing, Confirm, Aborted) derived from the abstract BookingStatus class. This design allows the system to dynamically change and print the booking state during processing, providing clear feedback to the user at every step.
+
+5. User Interaction and Real‑World Simulation
+Input Driven Flow:
+The system uses console input to simulate real-world checks:
+
+Passport Verification: A simple yes/no input determines if the passenger can proceed.
+Class and Additional Service Selection: Prompts allow passengers to select their travel class and extra services, directly affecting fare calculations.
+Payment Method Selection: The user can choose between credit card, debit card, or net banking. Multiple attempts are allowed, simulating a real-world scenario where a payment might initially fail.
+Dynamic Flight Display:
+The NoticeBoard class prints flight details in a formatted table, giving passengers an overview of available flights—similar to an airport display board.
+
+Conclusion
+In summary, the project is a robust simulation of an airport management system that effectively demonstrates:
+
+Modular Object‑Oriented Design: Each class is responsible for a distinct part of the system, making it extensible and maintainable.
+Integration of Real‑World Processes: From security checks and flight management to payment processing and exception handling, the project mirrors the complexities of an actual airport system.
+Advanced Design Patterns: The use of the Strategy and State patterns enhances the system’s flexibility and clarity in managing varying payment methods and booking states.
+This in‑depth architecture not only showcases your strong command over C++ and OOP principles but also reflects your ability to design and implement complex, real‑world systems.
